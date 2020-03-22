@@ -1,0 +1,8 @@
+// compressed: ../css/styles.css
+@charset 'UTF-8';
+
+// 1. Config
+@import 'abstracts/variables', 'abstracts/mixins', 'abstracts/animations';
+
+// 2. Page 
+@import 'pages/main';

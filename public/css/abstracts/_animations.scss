@@ -1,0 +1,143 @@
+// main: ../styles.scss
+
+/* Slide In Right
+   ============================ */
+
+@include keyframes(slideInRight) {
+	0% {
+		opacity: 0;
+		right: -520px;
+	}
+	100% {
+		opacity: 1;
+		right: 0;
+	}
+}
+
+/* Slide Out Right
+   ============================ */
+@include keyframes(slideOutRight) {
+	0% {
+		opacity: 1;
+		right: 0;
+	}
+	100% {
+		opacity: 0;
+		right: -520px;
+	}
+}
+
+/* Menu Animate Out 1
+   ============================ */
+
+@include keyframes(MenuAnimOut1) {
+	50% {
+		transform: translateZ(-250px) rotateY(30deg);
+	}
+	75% {
+		opacity: 0.5;
+		transform: translateZ(-372px) rotateY(15deg);
+	}
+	100% {
+		opacity: 0;
+		transform: translateZ(-500px) rotateY(0deg);
+	}
+}
+
+/* Menu Animate Out 2
+   ============================ */
+
+@include keyframes(MenuAnimOut2) {
+	100% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+}
+
+/* Menu Animate In 1
+   ============================ */
+
+@include keyframes(MenuAnimIn1) {
+	0% {
+		opacity: 0;
+		transform: translateZ(-500px) rotateY(0deg);
+	}
+	20% {
+		opacity: 0.5;
+		transform: translateZ(-250px) rotateY(30deg);
+	}
+	100% {
+		opacity: 1;
+		transform: translateZ(0) rotateY(0deg);
+	}
+}
+
+/* Menu Animate In 2
+   ============================ */
+
+@include keyframes(MenuAnimIn2) {
+	0% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Submenu Animate In 1
+   ============================ */
+
+@include keyframes(SubMenuAnimIn1) {
+	0% {
+		opacity: 0;
+		transform: translateX(50%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Submenu Animate In 2
+   ============================ */
+
+@include keyframes(SubMenuAnimIn2) {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Submenu Animate Out 1
+   ============================ */
+
+@include keyframes(SubMenuAnimOut1) {
+	0% {
+		opacity: 1;
+		transform: translateX(0%);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(50%);
+	}
+}
+
+/* Submenu Animate Out 2
+   ============================ */
+
+@include keyframes(SubMenuAnimOut2) {
+	0% {
+		opacity: 1;
+		transform: translateX(0%);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+}
