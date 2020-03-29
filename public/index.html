@@ -18,22 +18,27 @@
   </head>
 
   <body>
-    <div class="container">
-      <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+    <div class="container-wrapper">
+      <div class="title-wrapper">
+        <img class="logo" src="/images/spotify_logo_black.png">
+        <h1>Playlist Mosaic</h1>
       </div>
-      <div id="loggedin">
+      <div class="container">
+        <div id="login">
+          <p>This website creates a beautiful mosaic for your playlists by using the album arts of your songs</p>
+          <a href="/login" class="login-btn">Log in with Spotify</a>
+        </div>
+        <div id="loggedin">
+          <div class="input-container">
+            <label for="playlistlink">Paste your playlist URI link:</label>
+            <input type="text" id="playlistlink" name="playlistlink">
+            <button class="submit-link submit-btn">Submit</button>
+          </div>
+          
+          <div id="images-container">
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="input-container">
-      <label for="playlistlink">Paste your playlist URI link:</label>
-      <input type="text" id="playlistlink" name="playlistlink">
-      <button class="submit-link">Submit</button>
-    </div>
-    
-    <div id="images-container">
     </div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>

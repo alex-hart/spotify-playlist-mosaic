@@ -1,9 +1,114 @@
-* {
-    font-family: 'Cantarell', sans-serif;
+@include font('Circular', '/fonts/Circular-Std-Book');
+@include font('Circular-Bold', '/fonts/Circular-Std-Bold');
+@include font('Circular-Black', '/fonts/Circular-Std-Black');
 
+* {
+    font-family: 'Circular', sans-serif;
+}
+
+.title-wrapper {
+    border-bottom: 1px solid $color-grey;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    .logo {
+        display: block;
+        height: 50px;
+        margin: 0 auto;
+    }
+    h1 {
+        text-align: center;
+    }
+}
+
+#login {
+    margin-top: 250px;
+    p {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .login-btn {
+        margin: 0 auto;
+        display: block;
+        font-family: 'Circular-Bold', sans-serif;
+        padding: 16px 14px 18px;
+        color: $color-white;
+        background-color: $color-primary;
+        font-size: 14px;
+        line-height: 1;
+        text-align: center;
+        border-radius: 500px;
+        border-width: 0;
+        letter-spacing: 2px;
+        max-width: 220px;
+        text-transform: uppercase;
+        white-space: normal;
+        @include transition(all .3s ease);
+        &:hover {
+            text-decoration: none;
+            color: $color-white;
+            background-color: $color-primary-hover;
+        }
+    }
+}
+
+.login-btn {
+    margin: 0 auto;
+    display: block;
+    font-family: 'Circular-Bold', sans-serif;
+    padding: 16px 14px 18px;
+    color: $color-white;
+    background-color: $color-primary;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    border-radius: 500px;
+    border-width: 0;
+    letter-spacing: 2px;
+    max-width: 220px;
+    text-transform: uppercase;
+    white-space: normal;
+    @include transition(all .3s ease);
+    &:hover {
+        text-decoration: none;
+        color: $color-white;
+        background-color: $color-primary-hover;
+    }
+}
+
+.input-container {
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 50px;
+    .submit-btn {
+        margin: 0 auto;
+        margin-top: 40px;
+        display: block;
+        font-family: 'Circular-Bold', sans-serif;
+        padding: 16px 14px 18px;
+        color: $color-white;
+        background-color: $color-primary;
+        font-size: 14px;
+        line-height: 1;
+        text-align: center;
+        border-radius: 500px;
+        border-width: 0;
+        letter-spacing: 2px;
+        min-width: 220px;
+        text-transform: uppercase;
+        white-space: normal;
+        @include transition(all .3s ease);
+        &:hover {
+            text-decoration: none;
+            color: $color-white;
+            background-color: $color-primary-hover;
+        }
+    }
 }
 
 #images-container {
     display: flex;
     flex-wrap: wrap;
+    width: 390px;
+    margin: 0 auto;
+    margin-top: 60px;
 }
