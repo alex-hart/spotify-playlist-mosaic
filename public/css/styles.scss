@@ -2,7 +2,7 @@
 @charset 'UTF-8';
 
 // 1. Config
-@import 'abstracts/variables', 'abstracts/mixins', 'abstracts/animations';
+@import 'abstracts/variables', 'abstracts/mixins', 'abstracts/animations', 'abstracts/rem';
 
 // 2. Page 
 @import 'pages/main';
