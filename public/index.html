@@ -31,7 +31,7 @@
         </div>
         <div id="loggedin">
           <div class="input-container">
-            <label for="playlistlink">Paste your playlist URI link:</label>
+            <label for="playlistlink">Paste your playlist share link:</label>
             <input type="text" id="playlistlink" name="playlistlink">
             <button class="submit-link submit-btn">Submit</button>
           </div>
@@ -91,7 +91,7 @@
               console.log(submitLink);
               submitLink.on('click', function() {
                 var playlistLink = $('#playlistlink').val();
-                var playlistURI = playlistLink.slice(17);
+                var playlistURI = playlistLink.slice(34);
                 document.getElementById("images-container").innerHTML = "";
                 $.ajax({
                   url: 'https://api.spotify.com/v1/playlists/' + playlistURI,
