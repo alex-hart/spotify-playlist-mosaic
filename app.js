@@ -30,9 +30,6 @@ app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
 
-var path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
