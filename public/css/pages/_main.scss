@@ -1,6 +1,6 @@
-@include font('Circular', 'fonts/Circular-Std-Book');
-@include font('Circular-Bold', 'fonts/Circular-Std-Bold');
-@include font('Circular-Black', 'fonts/Circular-Std-Black');
+@include font('Circular', '/fonts/Circular-Std-Book');
+@include font('Circular-Bold', '/fonts/Circular-Std-Bold');
+@include font('Circular-Black', '/fonts/Circular-Std-Black');
 
 * {
     font-family: 'Circular', sans-serif;
