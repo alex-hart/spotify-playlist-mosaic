@@ -29,13 +29,17 @@
           <p>This website creates a beautiful mosaic for your playlists by using the album arts of your songs</p>
           <a href="/login" class="login-btn">Log in with Spotify</a>
         </div>
+        <!-- TODO: add simple tutorial of how to grab spotify playlist while using app -->
         <div id="loggedin">
+          <!-- TODO: Add in functionality to let user select from a list of their playlist as an alternative -->
           <div class="input-container">
             <label for="playlistlink">Paste your playlist share link:</label>
             <input type="text" id="playlistlink" name="playlistlink">
             <button class="submit-link submit-btn">Submit</button>
           </div>
           
+          <!-- TODO: allow user to download the mosaic -->
+          <!-- TODO: allow user to sort the images from dark to light -->
           <div id="images-container">
           </div>
         </div>
@@ -109,6 +113,7 @@
                     var albumArtStore = [];
                     for (i = 0; i < tracks.length; i++) {
                       var albumID = tracks[i].track.album.uri;
+                      //TODO: depending on size of playlist, grab the 3 different image sizes that Spotify provides
                       var albumArt = tracks[i].track.album.images[0].url;
                       if (albumStore.includes(albumID) === false) {
                         //unique album, update list and collect its album art url
@@ -119,6 +124,8 @@
 
                     
                     // api can only get max 100 tracks at once, keep making calls until all songs are stored
+                    // TODO: add code to grab every single track, not just first 200
+                    // TODO: convert below logic to simple reusable functions
                     if (tracks.length === 100) {
                       $.ajax({
                         url: 'https://api.spotify.com/v1/playlists/' + playlistURI + '/tracks?offset=100',
@@ -166,7 +173,7 @@
                         }
                       });
                     } else {
-                      
+
                       // get total number of unique albums in users playlist
                       var noOfAlbums = albumArtStore.length;
 
