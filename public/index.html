@@ -93,6 +93,7 @@
 
             $(function() {
 
+              // TODO: consider converting these into ES6 arrow functions, also maybe use higher order functions if applicable
               function generateMosaic(noOfAlbums, albumArtStore) {
                 // function to get nearest square (as we want a square mosaic of the album arts)
                 const getNearestSquare = n => Math.floor(Math.sqrt(n));
