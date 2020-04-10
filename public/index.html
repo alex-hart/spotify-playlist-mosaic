@@ -87,11 +87,13 @@
             });
 
             $(function() {
+
               var submitLink = $('.submit-link');
-              console.log(submitLink);
+
               submitLink.on('click', function() {
-                var playlistLink = $('#playlistlink').val();
-                var playlistURI = playlistLink.slice(34);
+                var playlistLink = $('#playlistlink').val().slice(34);
+                var splitLink = playlistLink.split('?');
+                var playlistURI = splitLink[0];
                 document.getElementById("images-container").innerHTML = "";
                 $.ajax({
                   url: 'https://api.spotify.com/v1/playlists/' + playlistURI,
@@ -115,25 +117,76 @@
                       }
                     }
 
-                    // get total number of unique albums in users playlist
-                    var noOfAlbums = albumArtStore.length;
+                    
+                    // api can only get max 100 tracks at once, keep making calls until all songs are stored
+                    if (tracks.length === 100) {
+                      $.ajax({
+                        url: 'https://api.spotify.com/v1/playlists/' + playlistURI + '/tracks?offset=100',
+                        type: 'GET',
+                        headers: {
+                          'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function(response) {
+                          var tracks = response.items;
+                          for (i = 0; i < tracks.length; i++) {
 
-                    // function to get nearest square (as we want a square mosaic of the album arts)
-                    const getNearestSquare = n => Math.floor(Math.sqrt(n));
-                    var nearestSquareRoot = getNearestSquare(noOfAlbums);
-                    var nearestSquare = Math.pow(nearestSquareRoot, 2);
+                            var albumID = tracks[i].track.album.uri;
+                            var albumArt = tracks[i].track.album.images[0].url;
 
-                    var flexPercentage = 100 / nearestSquareRoot + '%';
+                            if (albumStore.includes(albumID) === false) {
+                              //unique album, update list and collect its album art url
+                              albumStore.push(albumID);
+                              albumArtStore.push(albumArt);
+                              console.log(albumArtStore.length);
+                            }
+                          }
 
-                    for (i = 0; i < noOfAlbums; i++) {
-                      //create the album art images and add to container div
-                      if (i < nearestSquare ) {
-                        var elem = document.createElement('img');
-                        elem.setAttribute('class', 'album-art');
-                        elem.setAttribute('src', albumArtStore[i]);
-                        elem.setAttribute('height', flexPercentage);
-                        elem.setAttribute('width', flexPercentage);
-                        document.getElementById("images-container").appendChild(elem);
+                          // get total number of unique albums in users playlist
+                          var noOfAlbums = albumArtStore.length;
+                          console.log(albumArtStore.length);
+
+                          // function to get nearest square (as we want a square mosaic of the album arts)
+                          const getNearestSquare = n => Math.floor(Math.sqrt(n));
+                          var nearestSquareRoot = getNearestSquare(noOfAlbums);
+                          var nearestSquare = Math.pow(nearestSquareRoot, 2);
+
+                          var flexPercentage = 100 / nearestSquareRoot + '%';
+
+                          for (i = 0; i < noOfAlbums; i++) {
+                            //create the album art images and add to container div
+                            if (i < nearestSquare ) {
+                              var elem = document.createElement('img');
+                              elem.setAttribute('class', 'album-art');
+                              elem.setAttribute('src', albumArtStore[i]);
+                              elem.setAttribute('height', flexPercentage);
+                              elem.setAttribute('width', flexPercentage);
+                              document.getElementById("images-container").appendChild(elem);
+                            }
+                          }
+                        }
+                      });
+                    } else {
+                      
+                      // get total number of unique albums in users playlist
+                      var noOfAlbums = albumArtStore.length;
+
+                      // function to get nearest square (as we want a square mosaic of the album arts)
+                      const getNearestSquare = n => Math.floor(Math.sqrt(n));
+                      var nearestSquareRoot = getNearestSquare(noOfAlbums);
+                      var nearestSquare = Math.pow(nearestSquareRoot, 2);
+
+                      var flexPercentage = 100 / nearestSquareRoot + '%';
+
+                      for (i = 0; i < noOfAlbums; i++) {
+                        //create the album art images and add to container div
+                        if (i < nearestSquare ) {
+                          var elem = document.createElement('img');
+                          elem.setAttribute('class', 'album-art');
+                          elem.setAttribute('src', albumArtStore[i]);
+                          elem.setAttribute('height', flexPercentage);
+                          elem.setAttribute('width', flexPercentage);
+                          document.getElementById("images-container").appendChild(elem);
+                        }
                       }
                     }
                   }
