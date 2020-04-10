@@ -40,6 +40,7 @@
           
           <!-- TODO: allow user to download the mosaic -->
           <!-- TODO: allow user to sort the images from dark to light -->
+          <!-- TODO: larger mosaics have white gaps due to irregular image sizes, need to accomodate for with scss -->
           <div id="images-container">
           </div>
         </div>
@@ -63,7 +64,7 @@
           var e, r = /([^&;=]+)=?([^&;]*)/g,
               q = window.location.hash.substring(1);
           while ( e = r.exec(q)) {
-             hashParams[e[1]] = decodeURIComponent(e[2]);
+              hashParams[e[1]] = decodeURIComponent(e[2]);
           }
           return hashParams;
         }
@@ -92,6 +93,65 @@
 
             $(function() {
 
+              function generateMosaic(noOfAlbums, albumArtStore) {
+                // function to get nearest square (as we want a square mosaic of the album arts)
+                const getNearestSquare = n => Math.floor(Math.sqrt(n));
+                var nearestSquareRoot = getNearestSquare(noOfAlbums);
+                var nearestSquare = Math.pow(nearestSquareRoot, 2);
+
+                var flexPercentage = 100 / nearestSquareRoot + '%';
+
+                for (i = 0; i < noOfAlbums; i++) {
+                  //create the album art images and add to container div
+                  if (i < nearestSquare ) {
+                    var elem = document.createElement('img');
+                    elem.setAttribute('class', 'album-art');
+                    elem.setAttribute('src', albumArtStore[i]);
+                    elem.setAttribute('height', flexPercentage);
+                    elem.setAttribute('width', flexPercentage);
+                    document.getElementById("images-container").appendChild(elem);
+                  }
+                }
+              }
+
+              function checkUniqueAlbum(tracks, albumStore, albumArtStore) {
+                for (i = 0; i < tracks.length; i++) {
+
+                  var albumID = tracks[i].track.album.uri;
+                  var albumArt = tracks[i].track.album.images[0].url;
+
+                  if (albumStore.includes(albumID) === false) {
+                    //unique album -- update list and collect its album art url
+                    albumStore.push(albumID);
+                    albumArtStore.push(albumArt);
+                  }
+                }
+              }
+
+              function getPlaylistTracks(playlistURI, albumStore, albumArtStore, offset) {
+                $.ajax({
+                  url: 'https://api.spotify.com/v1/playlists/' + playlistURI + '/tracks?offset=' + offset,
+                  type: 'GET',
+                  headers: {
+                    'Authorization': 'Bearer ' + access_token
+                  },
+                  success: function(response) {
+                    var tracks = response.items;
+                    checkUniqueAlbum(tracks, albumStore, albumArtStore);
+
+                    // if there was 100 songs in this call, increase offset and get the next set of 100
+                    if (tracks.length === 100) {
+                      offset += 100;
+                      getPlaylistTracks(playlistURI, albumStore, albumArtStore, offset);
+                    } else {
+                      // we now have all the songs in the playlist --  generate the mosaic
+                      var noOfAlbums = albumArtStore.length;
+                      generateMosaic(noOfAlbums, albumArtStore);
+                    }
+                  }
+                });
+              }
+
               var submitLink = $('.submit-link');
 
               submitLink.on('click', function() {
@@ -99,6 +159,8 @@
                 var splitLink = playlistLink.split('?');
                 var playlistURI = splitLink[0];
                 document.getElementById("images-container").innerHTML = "";
+
+                // get at most the first 100 songs of playlist (due to api limit)
                 $.ajax({
                   url: 'https://api.spotify.com/v1/playlists/' + playlistURI,
                   headers: {
@@ -111,90 +173,16 @@
                     //get only unique albums in the playlist
                     var albumStore = [];
                     var albumArtStore = [];
-                    for (i = 0; i < tracks.length; i++) {
-                      var albumID = tracks[i].track.album.uri;
-                      //TODO: depending on size of playlist, grab the 3 different image sizes that Spotify provides
-                      var albumArt = tracks[i].track.album.images[0].url;
-                      if (albumStore.includes(albumID) === false) {
-                        //unique album, update list and collect its album art url
-                        albumStore.push(albumID);
-                        albumArtStore.push(albumArt);
-                      }
-                    }
+                    checkUniqueAlbum(tracks, albumStore, albumArtStore);
 
-                    
                     // api can only get max 100 tracks at once, keep making calls until all songs are stored
-                    // TODO: add code to grab every single track, not just first 200
-                    // TODO: convert below logic to simple reusable functions
                     if (tracks.length === 100) {
-                      $.ajax({
-                        url: 'https://api.spotify.com/v1/playlists/' + playlistURI + '/tracks?offset=100',
-                        type: 'GET',
-                        headers: {
-                          'Authorization': 'Bearer ' + access_token
-                        },
-                        success: function(response) {
-                          var tracks = response.items;
-                          for (i = 0; i < tracks.length; i++) {
-
-                            var albumID = tracks[i].track.album.uri;
-                            var albumArt = tracks[i].track.album.images[0].url;
-
-                            if (albumStore.includes(albumID) === false) {
-                              //unique album, update list and collect its album art url
-                              albumStore.push(albumID);
-                              albumArtStore.push(albumArt);
-                              console.log(albumArtStore.length);
-                            }
-                          }
-
-                          // get total number of unique albums in users playlist
-                          var noOfAlbums = albumArtStore.length;
-                          console.log(albumArtStore.length);
-
-                          // function to get nearest square (as we want a square mosaic of the album arts)
-                          const getNearestSquare = n => Math.floor(Math.sqrt(n));
-                          var nearestSquareRoot = getNearestSquare(noOfAlbums);
-                          var nearestSquare = Math.pow(nearestSquareRoot, 2);
-
-                          var flexPercentage = 100 / nearestSquareRoot + '%';
-
-                          for (i = 0; i < noOfAlbums; i++) {
-                            //create the album art images and add to container div
-                            if (i < nearestSquare ) {
-                              var elem = document.createElement('img');
-                              elem.setAttribute('class', 'album-art');
-                              elem.setAttribute('src', albumArtStore[i]);
-                              elem.setAttribute('height', flexPercentage);
-                              elem.setAttribute('width', flexPercentage);
-                              document.getElementById("images-container").appendChild(elem);
-                            }
-                          }
-                        }
-                      });
+                      var offset = 100;
+                      getPlaylistTracks(playlistURI, albumStore, albumArtStore, offset);
                     } else {
-
-                      // get total number of unique albums in users playlist
+                      // get total number of unique albums in users playlist and generate the mosaic
                       var noOfAlbums = albumArtStore.length;
-
-                      // function to get nearest square (as we want a square mosaic of the album arts)
-                      const getNearestSquare = n => Math.floor(Math.sqrt(n));
-                      var nearestSquareRoot = getNearestSquare(noOfAlbums);
-                      var nearestSquare = Math.pow(nearestSquareRoot, 2);
-
-                      var flexPercentage = 100 / nearestSquareRoot + '%';
-
-                      for (i = 0; i < noOfAlbums; i++) {
-                        //create the album art images and add to container div
-                        if (i < nearestSquare ) {
-                          var elem = document.createElement('img');
-                          elem.setAttribute('class', 'album-art');
-                          elem.setAttribute('src', albumArtStore[i]);
-                          elem.setAttribute('height', flexPercentage);
-                          elem.setAttribute('width', flexPercentage);
-                          document.getElementById("images-container").appendChild(elem);
-                        }
-                      }
+                      generateMosaic(noOfAlbums);
                     }
                   }
                 });
