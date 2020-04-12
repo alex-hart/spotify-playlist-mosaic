@@ -5,7 +5,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var client_id = '92a5c2f5232b41c3b8547c79cb8d12cd'; // Your client id
 var client_secret = '767d5e811cab480fbad0803137d4cbab'; // Your secret
-var redirect_uri = 'http://134.122.102.152/callback'; // Your redirect uri
+var redirect_uri = 'http://www.playlist-mosaic-generator.tk/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
