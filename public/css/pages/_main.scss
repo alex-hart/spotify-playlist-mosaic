@@ -27,7 +27,7 @@
 }
 
 #login {
-    margin-top: 250px;
+    margin-top: 50px;
     p {
         text-align: center;
         margin-bottom: 40px;
@@ -85,6 +85,9 @@
     width: fit-content;
     margin: 0 auto;
     margin-top: 50px;
+    @include breakpoint(mobile) {
+        margin-top: 25px;
+    }
     input {
         border: 1px solid $color-grey;
     }
@@ -137,6 +140,7 @@
     margin-top: 60px;
     @include breakpoint(mobile) {
         width: 90%;
-        margin-bottom: 20px;
+        height: 90%;
+        margin: 20px 0 0 20px;
     }
 }
