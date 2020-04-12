@@ -1,4 +1,4 @@
-# spotify-playlist-collage
+# Spotify Playlist Mosaic
 
 Simple collage generator for your spotify playlist using the album art from the tracks.
 
