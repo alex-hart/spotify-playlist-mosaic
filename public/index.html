@@ -1,5 +1,4 @@
 <!-- TODO: add SSL -->
-<!-- TODO: upload preview -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -46,7 +45,6 @@
           
           <!-- TODO: allow user to download the mosaic -->
           <!-- TODO: allow user to sort the images from dark to light -->
-          <!-- TODO: larger mosaics have white gaps due to irregular image sizes, need to accomodate for with scss -->
           <div id="images-container">
           </div>
         </div>
@@ -91,8 +89,8 @@
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  $('#login').hide();
-                  $('#loggedin').show();
+                  $('#login').fadeOut();
+                  $('#loggedin').fadeIn();
                 }
             });
 
@@ -197,8 +195,8 @@
             
           } else {
               // render initial screen
-              $('#login').show();
-              $('#loggedin').hide();
+              $('#login').fadeIn();
+              $('#loggedin').fadeOut();
           }
         }
       })();
